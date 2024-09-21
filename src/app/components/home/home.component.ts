@@ -33,8 +33,7 @@ export class HomeComponent {
 
 
   drop(e:CdkDragRelease , parentElm:HTMLElement , childElm:HTMLElement) {
-    console.log(this.GlobalService.marginLeft())
-    console.log(this.GlobalService.marginTop())
+
     let child = this.GridService.getDivPosition(childElm);
     let parent  = this.GridService.getDivPosition(parentElm)
     let newPosition = this.GridService.getPosition(child.centerX - parent.x , child.centerY - parent.y)
