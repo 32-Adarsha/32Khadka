@@ -32,15 +32,24 @@ export class HomeComponent {
 
 
 
-  drop(e:CdkDragRelease , parentElm:HTMLElement , childElm:HTMLElement) {
-
+  drop(e:CdkDragRelease , parentElm:HTMLElement , childElm:HTMLElement , gridParent:HTMLElement) {
     let child = this.GridService.getDivPosition(childElm);
     let parent  = this.GridService.getDivPosition(parentElm)
     let newPosition = this.GridService.getPosition(child.centerX - parent.x , child.centerY - parent.y)
-    let x = (newPosition.x)*150
-    let y = (newPosition.y)*150
-    this.dragPosition = {x: x, y: y};
+    let z = this.GlobalService.numberOfcol()*newPosition.y + newPosition.x;
+    const temp = gridParent.children[z] as HTMLElement;
+    this.dragPosition = {x: temp.offsetLeft, y: temp.offsetTop};
   }
+
+  dragElement(e:CdkDragRelease , parentElm:HTMLElement , childElm:HTMLElement , gridParent:HTMLElement){
+    let child = this.GridService.getDivPosition(childElm);
+    let parent  = this.GridService.getDivPosition(parentElm)
+    let newPosition = this.GridService.getPosition(child.centerX - parent.x , child.centerY - parent.y)
+    let z = this.GlobalService.numberOfcol()*newPosition.y + newPosition.x;
+    const temp = gridParent.children[z] as HTMLElement;
+  }
+
+
 
 
   protected readonly Array = Array;

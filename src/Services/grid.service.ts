@@ -23,14 +23,15 @@ export class GridService {
     };
   }
 
-
   public getPosition(x:number , y:number):{x:number, y:number} {
     x = Math.round((x-75)/150)
     y = Math.round((y-75)/150)
-    console.log(x, y)
     return {
       x : x,
       y : y,
     }
   }
+
+
+
 }
