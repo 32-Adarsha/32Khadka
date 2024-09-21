@@ -1,3 +1,5 @@
+import {CdkDrag} from "@angular/cdk/drag-drop";
+
 enum theme {
   Dark,
   Light
@@ -8,3 +10,5 @@ export class DisplaySetting {
   theme : theme = theme.Light;
   fonttype : string = 'default'
 }
+
+

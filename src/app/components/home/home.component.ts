@@ -1,31 +1,49 @@
-import { Component } from '@angular/core';
-
+import {Component, inject} from '@angular/core';
+import {CdkDrag, CdkDragDrop, CdkDragRelease, CdkDropList} from "@angular/cdk/drag-drop";
+import {ArryModel} from "../../../model/arryModel";
+import {GridService} from "../../../Services/grid.service";
+import {GlobalServiceService} from "../../../Services/global-service.service";
+import {NgStyle} from "@angular/common";
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [CdkDrag, CdkDropList, NgStyle],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+ // DI
+  GridService  = inject(GridService);
+  GlobalService = inject(GlobalServiceService);
+  styl = {
 
+  }
 
+  //Variable
+  displaySetting  = false
 
-  tgSetting(elem1:HTMLElement , elem2:HTMLElement){
+  dragPosition = {x: 0, y: 0};
 
-    console.log("Test");
-    if (elem1.style.display == 'none'){
-      elem1.style.display = 'flex';
-      elem2.style.display = 'flex';
-    } else {
-      elem1.style.display = 'none';
-      elem2.style.display = 'none';
-    }
+  tgSetting(){
+    this.displaySetting = !this.displaySetting;
   }
 
 
 
+  drop(e:CdkDragRelease , parentElm:HTMLElement , childElm:HTMLElement) {
+    console.log(this.GlobalService.marginLeft())
+    console.log(this.GlobalService.marginTop())
+    let child = this.GridService.getDivPosition(childElm);
+    let parent  = this.GridService.getDivPosition(parentElm)
+    let newPosition = this.GridService.getPosition(child.centerX - parent.x , child.centerY - parent.y)
+    let x = (newPosition.x)*150
+    let y = (newPosition.y)*150
+    this.dragPosition = {x: x, y: y};
+  }
 
+
+  protected readonly Array = Array;
+  protected readonly console = console;
 }
