@@ -1,5 +1,6 @@
 export class ArryModel {
-  x = 0;
-  y :number = 0;
-  filled : boolean = false;
+  width = 0;
+  height :number = 0;
+  background_image = 0;
+
 }

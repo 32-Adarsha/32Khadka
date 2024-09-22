@@ -6,7 +6,7 @@ import {computed, Injectable, Signal, signal, WritableSignal} from '@angular/cor
 export class GlobalServiceService {
 
   constructor() { }
-
+  HighlightPosition = 0;
   widthOfScreen : WritableSignal<number> = signal(Math.round(window.innerWidth*(10/12)))
   heightOfScreen : WritableSignal<number> = signal(Math.round(window.innerHeight*(5/6)))
   numberOfcol : Signal<number> = computed(() => {
@@ -18,8 +18,9 @@ export class GlobalServiceService {
     return x*y;
   })
   arrOfelement: Signal<string[]> = computed(() => {
-    const length = this.numberOfElement();
-    return new Array(length).fill("{outline:none}");
+    return new Array( this.numberOfElement()).fill("");
   })
+
+
 
 }
