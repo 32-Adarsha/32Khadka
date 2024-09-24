@@ -1,24 +1,42 @@
 
 <div class="w-full h-full relative flex flex-col justify-center items-center">
-  <div class="absolute bg-gray-100 w-10/12 h-5/6 rounded-2xl" id="canvas" #bound>
-    <div class="absolute w-full h-full flex flex-row flex-wrap justify-center items-center" id="wrapper" #gridParent>
-        @for(i of Array(this.GlobalService.numberOfElement());track $index){
-          <div class = "w-[150px] h-[150px] flex justify-center items-center " >
-              <div class = "w-[120px] h-[120px]  rounded-2xl {{GlobalService.arrOfelement()[$index]}}"></div>
-          </div>
-        }
-    </div>
-<!--    <div class="relative w-[150px] h-[150px] flex justify-center items-center" [cdkDragStartDelay]="1000" (cdkDragReleased)="drop(bound , thisElem , gridParent)" cdkDragBoundary="#canvas" cdkDrag [cdkDragFreeDragPosition]="dragPosition" (cdkDragMoved)="dragElement(bound , thisElem , gridParent)" #thisElem>-->
-<!--      <div appDragDrop class="w-[120px] h-[120px] bg-green-400 rounded-2xl  ease-in-out duration-75"   #cell>-->
+  <div class="absolute w-full h-full overflow-hidden">
+    <img src="/walpaper/{{wallService.selectedWallpaper()}}" alt="test">
+  </div>
 
-<!--      </div>-->
-<!--    </div>-->
+  <div  class="absolute bg-gray-100 opacity-20  rounded-2xl" [style.width]="GlobalService.width()" [style.height]="GlobalService.height()">
+
+  </div>
+  <div class="absolute bg-transparent rounded-2xl" [style.width]="GlobalService.width()" [style.height]="GlobalService.height()" id="canvas" #bound>
+    <div class="absolute w-full h-full flex flex-row flex-wrap justify-center items-center" id="wrapper" #gridParent>
+      @for(i of Array(this.GlobalService.numberOfElement());track $index){
+        <div class = "w-[150px] h-[150px] flex justify-center items-center">
+          <div class = "w-[120px] h-[120px]  rounded-2xl {{GlobalService.arrOfelement()[$index]}}"></div>
+        </div>
+      }
+    </div>
+
+
+
+    @for(c of compService.allComponents(); track $index){
+        <div [style.width]="c.width+30+'px'" [style.height]="c.height+30+'px'" class="absolute flex justify-center items-center" id="{{c.name}}" [cdkDragStartDelay]="1000" (cdkDragReleased)="drop(bound , c.name , gridParent , $index)" [cdkDragBoundary]= bound cdkDrag [cdkDragFreeDragPosition]="c.position" (cdkDragMoved)="dragElement(bound , c.name , gridParent)">
+          <div appDragDrop [style.width]="c.width+'px'" [style.height]="c.height+'px'" class="rounded-2xl ease-in-out duration-75">
+            <ng-template appLoadComponent [component]="c.smTile"></ng-template>
+          </div>
+        </div>
+    }
+
+
+
+
 
 
 
 
 
   </div>
+
+
     @if(displaySetting){
       <div class="absolute top-0 left-0 w-full h-full flex justify-center items-center">
 
@@ -27,17 +45,9 @@
         </div>
 
         <div class="absolute w-3/5 h-3/5 bg-white rounded-2xl  flex flex-col justify-start items-center p-5 gap-2" #setting>
-          <div class="font-bold text-3xl text-blue-400">Display Setting</div>
-          <div class="flex flex-row justify-start items-center w-full h-full gap-2">
-            <div class="w-1/4 h-full bg-gray-100 rounded-md p-3 flex flex-col justify-start items-center text-xl font-medium text-gray-600">
-              <ol>
-                <li>Display Setting</li>
-                <li>Extension</li>
-              </ol>
-            </div>
-            <div class="w-3/4 h-full bg-gray-200 rounded-md shadow-sm">
-
-            </div>
+          <div class="font-bold text-3xl text-blue-400">Settings</div>
+          <div class="w-full h-[91%] ">
+            <app-display-setting></app-display-setting>
           </div>
           <div class="absolute top-5 right-5 hover:rotate-45 duration-75 ease-in-out" (click)="tgSetting()">
             <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/multiply.png" alt="multiply"/>
@@ -59,3 +69,15 @@
 
 
   </div>
+
+
+
+<!--<button  class="w-[250px] h-[50px] bg-red-400 rounded" (click)="binService.postFeedback()">Get ALl FeedBack</button>-->
+
+<!--<ol>-->
+<!--  @for(element of binService.allFeedback() ; track  $index){-->
+<!--    <li>{{element.Message}}</li>-->
+<!--  }-->
+<!--</ol>-->
+
+

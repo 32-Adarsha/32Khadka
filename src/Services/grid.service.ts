@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
+import {GlobalServiceService} from "./global-service.service";
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ export class GridService {
 
   constructor() { }
 
-
+  GlobalService = inject(GlobalServiceService)
 
   public getDivPosition(element : HTMLElement) {
     const rect = element.getBoundingClientRect();
@@ -37,6 +38,11 @@ export class GridService {
       x : x,
       y : y,
     }
+  }
+
+  public getLocation(x:number){
+    let temp = document.getElementById('wrapper')!.children[x] as HTMLElement;
+    return {x:temp.offsetLeft , y:temp.offsetTop};
   }
 
 

@@ -1,0 +1,89 @@
+@keyframes blinkTop {
+  0% {
+    transform: translateY(0px);
+  }
+  1% {
+    transform: translateY(60px);
+  }
+  1.5% {
+    transform: translateY(-60px);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+
+@keyframes blinkTopRight {
+  0% {
+    transform: translate(160px , -10px );
+  }
+  1% {
+    transform: translate(160px , 60px );
+  }
+  1.5% {
+    transform: translate(160px , -60px );
+  }
+  100% {
+    transform: translate(160px , -10px );;
+  }
+}
+
+@keyframes blinkBtm {
+  0% {
+    transform: translateY(170px);
+  }
+  1% {
+    transform: translateY(60px);
+  }
+  1.5% {
+    transform: translateY(170px);
+  }
+  100% {
+    transform: translateY(170px);
+  }
+
+}
+
+@keyframes blinkBtmRight {
+  0% {
+    transform: translate(160px ,170px);
+  }
+  1% {
+    transform: translate(160px , 60px);
+  }
+  1.5% {
+    transform: translate(160px , 170px);
+  }
+  100% {
+    transform: translate(160px , 170px);
+  }
+
+}
+
+#lTop {
+  transform: translate(20px , -10px);
+  animation: blinkTop 5s cubic-bezier(0.33, 1.11, 0.58, 1) infinite;
+}
+
+#lBtm {
+  transform: translateY(170px);
+  animation: blinkBtm 5s cubic-bezier(0.33, 1.11, 0.58, 1) infinite;
+}
+
+
+#rBtm {
+  transform: translate(160px , 170px);
+  animation: blinkBtmRight 5s linear infinite;
+}
+
+#rTop {
+  transform: translate(160px , -10px );
+  animation: blinkTopRight 5s linear infinite;
+}
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+
+<div class="w-full h-full shadow-md rounded-2xl">
+<div class="w-[120px] h-[120px] cursor-pointer bg-gray-100 rounded-2xl flex justify-center items-center text-center text-white p-1 clockShadow absolute">
+  <div class="absolute left-1/2  w-[45px] h-[10px] bg-black rounded-2xl origin-left clockRotateHour clockhand" [style.rotate]="clockService.getHoursAngle()" ></div>
+  <div class="absolute left-1/2  w-[55px] h-[5px] bg-black outline rounded-2xl origin-left shadow-sm clockRotateMinute clockhand" [style.rotate]="clockService.getMinuteAngle()"></div>
+  <div class="absolute left-1/2  w-[55px] h-[3px] bg-red-400 rounded-2xl clockRotateSecond shadow-sm" [style.rotate]="clockService.getSecondsAngle()" ></div>
+  <div class="w-[10px] h-[10px] rounded bg-black z-50 outline shadow-sm"></div>
+</div>
+</div>
+
+

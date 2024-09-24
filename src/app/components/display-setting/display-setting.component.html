@@ -1,0 +1,20 @@
+<div class="flex flex-row  justify-start items-center w-full h-full gap-2">
+  <div class="w-1/4 h-full bg-gray-100 rounded-md p-3 flex flex-col justify-start items-center text-xl font-medium text-gray-600">
+      <button (click)="onSelected(displayOption.wallpaper)" class="w-full h-[45px] p-3 rounded-md flex justify-center items-center my-2 {{selected == displayOption.wallpaper ? 'bg-green-300':'bg-gray-200'}}">Wallpaper</button>
+      <button (click)="onSelected(displayOption.Feature)" class="w-full h-[45px] bg-gray-200 p-3 rounded-md flex justify-center items-center my-2 {{selected == displayOption.Feature ? 'bg-green-300':'bg-gray-200'}}">Feature</button>
+  </div>
+  <div class="w-3/4 h-full bg-gray-200 rounded-md shadow-sm p-5 overflow-scroll">
+    @switch (selected){
+      @case (displayOption.wallpaper){
+        @for (wallpaper of wallservice.allWallpaper; track  $index){
+          <div (click)="wallservice.changeWallpaper(wallpaper)" [style.outline]=isOutline(wallpaper) class="w-full h-[150px] my-3 outline-offset-2 overflow-hidden rounded-md outline-black">
+            <img class="w-full h-full object-cover" src="/walpaper/{{wallpaper}}">
+          </div>
+        }
+      }
+      @case (displayOption.quote){
+        <div>Test2</div>
+      }
+    }
+  </div>
+</div>
