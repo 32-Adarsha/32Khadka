@@ -8,7 +8,7 @@
       @case (displayOption.wallpaper){
         @for (wallpaper of wallservice.allWallpaper; track  $index){
           <div (click)="wallservice.changeWallpaper(wallpaper)" [style.outline]=isOutline(wallpaper) class="w-full h-[150px] my-3 outline-offset-2 overflow-hidden rounded-md outline-black">
-            <img class="w-full h-full object-cover" src="/walpaper/{{wallpaper}}">
+            <img class="w-full h-full object-cover" src="./walpaper/{{wallpaper}}">
           </div>
         }
       }
