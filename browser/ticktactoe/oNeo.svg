@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with Vectornator (http://vectornator.io/) -->
+<svg height="100%" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="0 0 182.018 188.812" width="100%" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<linearGradient gradientTransform="matrix(146.299 -5.22911 5.22911 146.299 11.6478 94.4051)" gradientUnits="userSpaceOnUse" id="LinearGradient" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0" stop-color="#13f0d8"/>
+<stop offset="1" stop-color="#37ffce"/>
+</linearGradient>
+<filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="185.819" id="Filter" width="185.722" x="-1.85227" y="11.4966">
+<feDropShadow dx="-3.67321e-05" dy="10" flood-color="#000000" flood-opacity="0.333" in="SourceGraphic" result="Shadow" stdDeviation="5"/>
+</filter>
+</defs>
+<clipPath id="ArtboardFrame">
+<rect height="188.812" width="182.018" x="0" y="0"/>
+</clipPath>
+<g clip-path="url(#ArtboardFrame)" id="Layer" vectornator:layerName="Layer">
+<path d="M91.009 14.9966C47.159 14.9966 11.6478 50.5079 11.6478 94.3579C11.6478 138.207 47.159 173.813 91.009 173.815C134.859 173.815 170.37 138.207 170.37 94.3579C170.37 50.5079 134.859 14.9966 91.009 14.9966ZM91.009 50.657C115.168 50.657 134.711 70.1993 134.711 94.3579C134.711 118.517 115.168 138.153 91.009 138.153C66.8508 138.153 47.3086 118.517 47.3086 94.3579C47.3086 70.1993 66.8508 50.657 91.009 50.657Z" fill="url(#LinearGradient)" fill-rule="nonzero" filter="url(#Filter)" stroke="#000000" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2" vectornator:layerName="Curve 1" vectornator:shadowAngle="1.5708" vectornator:shadowColor="#000000" vectornator:shadowOffset="10" vectornator:shadowOpacity="0.333" vectornator:shadowRadius="10"/>
+</g>
+</svg>
