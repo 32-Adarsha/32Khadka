@@ -9,7 +9,7 @@ export class WeatherService {
   lng:number = -93.292358
   temp = 0;
   icon:Signal<string> = computed(()=> {
-    return `/weatherIcon/animated/${this.condition()}.svg`
+    return `./weatherIcon/animated/${this.condition()}.svg`
   })
   apiUrl:string = 'https://weatherapi-com.p.rapidapi.com/current.json';
   condition:WritableSignal<string> = signal('');
