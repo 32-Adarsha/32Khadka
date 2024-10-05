@@ -29,6 +29,10 @@ export class GlobalServiceService {
     return new Array( this.numberOfElement()).fill("");
   })
 
+  isFilled:Signal<boolean[]> = computed(() => {
+    return new Array( this.numberOfElement()).fill(false);
+  })
+
   getPoint(x:number){
 
     let noRow = Math.floor(this.widthOfScreen() /  150)

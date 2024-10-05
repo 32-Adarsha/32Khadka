@@ -5,6 +5,7 @@ export class ComponentHolder {
     public name: string,
     public smTile: Type<any>,
     public bgTile: Type<any> | undefined,
+    public cType: CellType,
     public width:number,
     public height:number ,
     public index:number,
@@ -12,10 +13,8 @@ export class ComponentHolder {
 }
 
 
-export interface Tile_if {
-  smTile:Type<any>,
-  bgTile:Type<any>,
-  width:number,
-  height:number,
-  position:{x:number, y:number}
+export enum CellType {
+  small,
+  mid,
+  big,
 }

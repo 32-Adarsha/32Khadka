@@ -15,6 +15,7 @@ import {GridComponent} from "../grid/grid.component";
 import {RIVE_FOLDER, RiveModule} from 'ng-rive';
 import {DisplaySettingComponent} from "../display-setting/display-setting.component";
 import {WallpaperService} from "../../../Services/wallpaper.service";
+import {CellType} from "../../../model/component-holder";
 
 @Component({
   selector: 'app-home',
@@ -35,16 +36,13 @@ export class HomeComponent {
  // DI
   GridService  = inject(GridService);
   GlobalService = inject(GlobalServiceService);
-  binService:FeedbackService = inject(FeedbackService);
   compService:ComponentServiceService = inject(ComponentServiceService)
   wallService = inject(WallpaperService)
 
 
   //Variable
   displaySetting  = false
-  timeoutId:any;
-  timeoutId2:any;
-  dragPosition = {x: 0, y: 0};
+
 
 
 
@@ -53,28 +51,19 @@ export class HomeComponent {
     this.displaySetting = !this.displaySetting;
   }
 
-  drop(parentElm: HTMLElement, c: string, gridParent: HTMLElement , index:number) {
+  drop(parentElm: HTMLElement, c: string, gridParent: HTMLElement , index:number , t:CellType) {
     let childElm = document.getElementById(c)!
-    let newPosition = this.GridService.getNewPosition(childElm , parentElm);
-    let z = this.GlobalService.numberOfcol()*newPosition.y + newPosition.x;
+    let newPosition = this.GridService.getNewPosition(childElm , parentElm ,t);
+    let z = newPosition[0]
     const temp = gridParent.children[z] as HTMLElement;
     this.compService.allComponents()[index].position = {x:(temp.offsetLeft) , y:(temp.offsetTop)};
     this.compService.allComponents()[index].index = z;
-    this.GlobalService.arrOfelement()[z] = '';
   }
-  dragElement( parentElm:HTMLElement , c:string , gridParent:HTMLElement){
+  dragElement( parentElm:HTMLElement , c:string , gridParent:HTMLElement , t:CellType){
     let childElm = document.getElementById(c)!
-    let newPosition = this.GridService.getNewPosition(childElm , parentElm);
-    let z = this.GlobalService.numberOfcol()*newPosition.y + newPosition.x;
-    this.GlobalService.arrOfelement()[this.GlobalService.HighlightPosition] = '';
-    this.GlobalService.arrOfelement()[z] = 'outline';
-    this.GlobalService.HighlightPosition = z;
-  }
-
-
-  geteyeposition(){
-    let item = this.GridService.getDivPosition(document.getElementById('left_eye')!)
-    console.log(item)
+    let newPosition = this.GridService.getNewPosition(childElm , parentElm, t);
+    let z = newPosition[0]
+    this.GridService.divOutline().pos = this.GlobalService.getPoint(z);
   }
 
   protected readonly Array = Array;
