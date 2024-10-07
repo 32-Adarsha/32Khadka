@@ -92,3 +92,7 @@
 .customStyle{
   visibility: hidden;
 }
+
+.zIndex {
+  z-index: -120;
+}

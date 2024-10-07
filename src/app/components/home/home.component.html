@@ -24,8 +24,8 @@
       </div>
     </div>
     @for(c of compService.allComponents(); track $index){
-        <div [style.width]="c.width+30+'px'" [style.height]="c.height+30+'px'" class="absolute flex justify-center items-center" id="{{c.name}}" [cdkDragStartDelay]="1000" (cdkDragReleased)="drop(bound , c.name , gridParent , $index ,c.cType)" [cdkDragBoundary]= bound cdkDrag [cdkDragFreeDragPosition]="c.position" (cdkDragMoved)="dragElement(bound , c.name , gridParent, c.cType)">
-          <div appDragDrop [type]="c.cType" [pos]="c.index" [style.width]="c.width+'px'" [style.height]="c.height+'px'" class="rounded-2xl ease-in-out duration-75">
+        <div [style.z-index]="c.zIndex" [style.width]="c.width+30+'px'" [style.height]="c.height+30+'px'" class="absolute flex justify-center items-center" id="{{c.name}}" [cdkDragStartDelay]="1000" (cdkDragReleased)="drop(bound , c.name , gridParent , $index ,c.cType)" [cdkDragBoundary]= bound cdkDrag [cdkDragFreeDragPosition]="c.position" (cdkDragMoved)="dragElement(bound , c.name , gridParent, c.cType)" (cdkDragStarted)="compService.removePosition($index)">
+          <div appDragDrop [type]="c.cType" [pos]="c.index" [indx]="$index" [style.width]="c.width+'px'" [style.height]="c.height+'px'" class="rounded-2xl ease-in-out duration-75">
             <ng-template appLoadComponent [component]="c.smTile"></ng-template>
           </div>
         </div>

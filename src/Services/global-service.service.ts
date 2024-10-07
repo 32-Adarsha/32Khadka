@@ -16,7 +16,6 @@ export class GlobalServiceService {
   height:Signal<string> = computed(()=> {
     return Math.floor(this.heightOfScreen() /  150)*150 + "px"
   })
-
   numberOfcol : Signal<number> = computed(() => {
     return Math.floor(this.widthOfScreen() / 150)
   })
@@ -29,12 +28,7 @@ export class GlobalServiceService {
     return new Array( this.numberOfElement()).fill("");
   })
 
-  isFilled:Signal<boolean[]> = computed(() => {
-    return new Array( this.numberOfElement()).fill(false);
-  })
-
   getPoint(x:number){
-
     let noRow = Math.floor(this.widthOfScreen() /  150)
     let noCol = Math.floor(this.heightOfScreen() / 150)
     let x_cord = Math.floor(x/noRow )*150
