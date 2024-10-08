@@ -12,7 +12,6 @@ import {GithubComponent} from "../app/components/socialMedia/github/github.compo
 import {InstagramComponent} from "../app/components/socialMedia/instagram/instagram.component";
 import {MailComponent} from "../app/components/socialMedia/mail/mail.component";
 import {ResumeComponent} from "../app/components/socialMedia/resume/resume.component";
-import {Cell} from "../model/cell";
 
 
 @Injectable({
@@ -33,118 +32,117 @@ export class ComponentServiceService {
     new ComponentHolder('Instagram' , InstagramComponent, undefined ,CellType.small, 120, 120 , 9, 'auto',[9],{x:0 ,y:0} ),
     new ComponentHolder('Mail' , MailComponent, undefined ,CellType.small, 120, 120 , 10, 'auto',[10],{x:0 ,y:0} ),
     new ComponentHolder('Resume' , ResumeComponent, undefined ,CellType.small, 120, 120 , 11, 'auto',[11],{x:0 ,y:0} ),
-
   ]
   allComponents:WritableSignal<ComponentHolder[]> = signal([])
-  isFilled:Signal<CellType[]> = computed(()=> {
-    let temp = new Array( this.GlobalService.numberOfElement()).fill(CellType.blank)
-    this.allComponents().forEach(component=>{
-      component.arrPos.forEach(pos => {
-        temp[pos] = component.cType
+  isFilled:Signal<{name:string ,type:CellType , id:number}[]> = computed(()=> {
+    let temp:{name:string ,type:CellType , id:number}[] = new Array( this.GlobalService.numberOfElement()).fill({name:"" ,type:CellType.blank, id:-1});
+    for(let j=0; j < this.allComponents().length;j++){
+      let c = this.allComponents()[j]
+      this.allComponents()[j].arrPos.forEach(elementAt => {
+        temp[elementAt] = {name:c.name , type:c.cType , id:j}
       })
-    })
+    }
     return temp
   })
 
-  fillPosition(newPosition:number[] , index:number){
-    newPosition.forEach(pos => {
-      this.isFilled()[pos] = this.allComponents()[index].cType
-    })
-  }
+
 
   removePosition(index:number){
     this.allComponents()[index].arrPos.forEach(pos => {
-      this.isFilled()[pos] = CellType.blank
+      this.isFilled()[pos] = {name:"" ,type:CellType.blank, id:-1}
+      console.log(pos)
     })
 
-    console.log(this.isFilled())
+
   }
 
 
-  getFreeSpace(leftPos: number, rightPos: number) {
-    let element = leftPos == rightPos ? [leftPos]:[leftPos, rightPos];
-    let spaceNeeded = leftPos == rightPos ? 1 : 2;
-    let spaceFound = [];
-    let bfsElement = [leftPos - 1, rightPos + 1];
-    let bound = this.GlobalService.numberOfElement() - 1;
+  getFreeSpace(leftPos: number, rightPos: number , indexAtComponent:number , newPosArr:number[]) {
+    let passLeftPos = leftPos
+    let spaceNeeded :number = leftPos == rightPos ? 1 : 2
+    let spaceFound = []
+    while(spaceNeeded > spaceFound.length){
 
-    while (spaceNeeded != spaceFound.length && bfsElement.length > 0) {
-      let x = bfsElement.shift();
-      console.log(x)
-      if (x !== undefined && x >= 0 && x <= bound) {
-        if (x < leftPos && x >= 0) {
-          if (this.isFilled()[x] == CellType.blank) {
-            spaceFound.push(x);
-          } else {
-            element.unshift(x);
-          }
-          bfsElement.push(x - 1);
-        } else if (x > rightPos && x <= bound) {
-          if (this.isFilled()[x] == CellType.blank) {
-            spaceFound.push(x);
-          } else {
-            element.push(x);
-          }
-          bfsElement.push(x + 1);
+      leftPos -= 1
+      rightPos += 1
+      if(leftPos >= 0){
+        if (this.isFilled()[leftPos].type == CellType.blank){
+          spaceFound.push(leftPos)
+
         }
+      }
+
+      if(spaceNeeded <= spaceFound.length){
+        break
+      }
+
+      if (rightPos < this.GlobalService.numberOfElement()){
+
+        if (this.isFilled()[rightPos].type == CellType.blank){
+          spaceFound.push(rightPos)
+        }
+      }
+
+      if(leftPos < 0 && rightPos >= this.GlobalService.numberOfElement()){
+        break
       }
     }
 
-   this.gridRearrange(spaceFound , element , leftPos , rightPos)
+    this.gridRearrange(spaceFound , passLeftPos , indexAtComponent , newPosArr)
+
   }
-
-
   isEmpyty(index:number , t:CellType){
-    if (this.isFilled()[index] == CellType.blank){
-      this.isFilled()[index] = t
+
+    if (this.isFilled()[index].type == CellType.blank){
       return true
     }
     return false
   }
+  gridRearrange(space:number[] , leftPos:number , indexAtComponent:number , newPosArr:number[]) {
+      let y = this.isFilled();
+      space.forEach(pos => {
+        y.splice(pos , 1)
+      })
+      let z = {name:this.allComponents()[indexAtComponent].name , type:this.allComponents()[indexAtComponent].cType , id:indexAtComponent}
+      y.splice(leftPos , 0 ,z )
+      this.isFilled = signal<{ name: string , type: CellType ,id: number }[]>([...y])
+      let i = 0;
+      while(i < y.length){
+        let isContained = !(y[i].type == CellType.blank)
+        if(isContained){
+          let idx:number = y[i].id
 
-  gridRearrange(space:number[], element:number[] , leftPos:number, rightPos:number){
-    while(space.length > 0 && element.length > 0){
-      let x = space.shift();
-      if (x !== undefined && x < leftPos){
-        let i = <number>element.unshift()
-        let elementIndex = this.findElementAt(i)
-        this.allComponents()[elementIndex].position = this.GlobalService.getPoint(x)
-        this.isFilled()[x] = this.allComponents()[elementIndex].cType
-        this.allComponents()[elementIndex].index = x
-        if (i <= leftPos && i <= rightPos ){
-        } else {
-          space.push(i)
+          if(y[i].type == CellType.small){
+            this.allComponents()[idx].position = this.GlobalService.getPoint(i)
+            this.allComponents()[idx].index = i
+            this.allComponents()[idx].arrPos = [i]
+          } else {
+            let x = false
+
+            this.allComponents()[idx].position = this.GlobalService.getPoint(i)
+            this.allComponents()[idx].index = i
+            this.allComponents()[idx].arrPos = [i , i+1]
+            i++
+          }
         }
-
-      } else if (x !== undefined && x > rightPos){
-        let i = <number>element.pop()
-        let elementIndex = this.findElementAt(i)
-        this.allComponents()[elementIndex].position = this.GlobalService.getPoint(x)
-        this.isFilled()[x] = this.allComponents()[elementIndex].cType
-        this.allComponents()[elementIndex].index = x
-        if (i <= leftPos && i <= rightPos ){
-
-        } else {
-          space.push(i)
-        }
+        i+=1
       }
-    }
 
-    console.log(this.isFilled())
+
   }
+  fillPosition(newPosArr:number[] , index:number ) {
+    newPosArr.forEach(pos => {
+      this.isFilled()[pos] = {name : this.allComponents()[index].name , type:this.allComponents()[index].cType , id:index} ;
+    })
+    this.allComponents()[index].position = this.GlobalService.getPoint(newPosArr[0])
+    this.allComponents()[index].index = newPosArr[0]
+    this.allComponents()[index].arrPos = newPosArr
 
-  findElementAt(x:number){
-    for(let i = 0 ; i < this.allComponents().length ; i++){
-      let index = this.allComponents()[i].index
-      if (index == x){
-        return i
-      }
-    }
-    return  -1
   }
-
-
-
+  isAtEdge(pos:number){
+    let num = this.GlobalService.numberOfcol()
+    return pos % num == num - 1
+  }
   constructor() {
     this.ComponentArray.forEach((element:ComponentHolder) => {
       element.position = this.GlobalService.getPoint(element.index);

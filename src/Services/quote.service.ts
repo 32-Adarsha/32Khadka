@@ -35,7 +35,8 @@ export class QuoteService {
         this.author.set(response.data[0].author)
       }
     ).catch((error) => {
-      console.log(error)
+      this.randomQuote.set("If you cannot do great things, do small things in a great way.")
+      this.author.set("Napoleon Hill")
     });
   }
 }

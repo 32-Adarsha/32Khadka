@@ -51,32 +51,28 @@ export class HomeComponent {
     this.displaySetting = !this.displaySetting;
   }
 
-  drop(parentElm: HTMLElement, c: string, gridParent: HTMLElement , index:number , t:CellType) {
+  drop(parentElm: HTMLElement, c: string, gridParent: HTMLElement , indexAtComponent:number , t:CellType) {
     let childElm = document.getElementById(c)!
     let newPosition = this.GridService.getNewPosition(childElm , parentElm ,t);
+    newPosition = newPosition.sort()
     let z = newPosition[0]
     if (!this.compService.isEmpyty(z ,t)){
       if (newPosition.length == 1){
-        this.compService.getFreeSpace(newPosition[0],newPosition[0])
+        this.compService.getFreeSpace(newPosition[0],newPosition[0] , indexAtComponent , newPosition)
       } else if (newPosition.length == 2){
-        this.compService.getFreeSpace(newPosition[0],newPosition[1])
+        this.compService.getFreeSpace(newPosition[0],newPosition[1] , indexAtComponent , newPosition)
       }
+    } else {
+      this.compService.fillPosition(newPosition , indexAtComponent)
     }
-
-    this.compService.fillPosition(newPosition ,index)
-
-    const temp = gridParent.children[z] as HTMLElement;
-    this.compService.allComponents()[index].position = {x:(temp.offsetLeft) , y:(temp.offsetTop)};
-    this.compService.allComponents()[index].index = z;
-    this.compService.allComponents()[index].arrPos = newPosition;
   }
   dragElement( parentElm:HTMLElement , c:string , gridParent:HTMLElement , t:CellType){
     let childElm = document.getElementById(c)!
     let newPosition = this.GridService.getNewPosition(childElm , parentElm, t);
     let z = newPosition[0]
-
     this.GridService.divOutline().pos = this.GlobalService.getPoint(z);
   }
 
   protected readonly Array = Array;
+  protected readonly console = console;
 }
