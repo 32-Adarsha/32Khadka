@@ -2,6 +2,8 @@ import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {debounceTime, fromEvent, Subscription} from "rxjs";
 import {GlobalServiceService} from "../Services/global-service.service";
+import {ComponentServiceService} from "../Services/component-service.service";
+import {ComponentHolder} from "../model/component-holder";
 
 @Component({
   selector: 'app-root',
@@ -11,9 +13,10 @@ import {GlobalServiceService} from "../Services/global-service.service";
   styleUrl: './app.component.css'
 })
 export class AppComponent implements  OnInit , OnDestroy{
-  title = 'personalPage';
+  title = '32Kiran';
   private resizeSubscription: Subscription | undefined;
   GlobalService = inject(GlobalServiceService)
+  componentService = inject(ComponentServiceService)
 
 
 
@@ -31,6 +34,12 @@ export class AppComponent implements  OnInit , OnDestroy{
         this.GlobalService.widthOfScreen.set(Math.round((window.innerWidth)*10/12));
         this.GlobalService.heightOfScreen.set( Math.round((window.innerHeight)*5/6));
         console.log('Window resized! New dimensions:', this.GlobalService.widthOfScreen());
+        this.componentService.ComponentArray.forEach((element:ComponentHolder) => {
+          element.position = this.GlobalService.getPoint(element.index);
+        })
+        this.componentService.allComponents.set(this.componentService.ComponentArray);
+
+
       });
   }
 

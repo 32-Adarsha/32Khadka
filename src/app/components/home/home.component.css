@@ -96,3 +96,11 @@
 .zIndex {
   z-index: -120;
 }
+
+
+.CustomBlur {
+    filter: blur(1px);
+    opacity: 60%;
+}
+
+

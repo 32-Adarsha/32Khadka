@@ -19,5 +19,6 @@ export enum CellType {
   small,
   mid,
   big,
+  long,
   blank
 }

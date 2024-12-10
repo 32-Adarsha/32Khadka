@@ -1,1 +1,10 @@
-<p>planguage works!</p>
+<div class=" relative w-[120px] h-[270px] rounded-2xl">
+  <div class="absolute w-full h-full bg-white -z-20 opacity-80 rounded-2xl">
+
+  </div>
+  <div class="w-full h-full flex flex-row flex-wrap justify-between items-center p-2" #bound>
+      @for(item of allLanguages; track $index){
+        <img  class="w-[50px] h-[50px] hover:scale-110" src="./Vasa/{{item}}.svg" alt="item"/>
+      }
+  </div>
+</div>

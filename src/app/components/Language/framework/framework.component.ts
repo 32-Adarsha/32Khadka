@@ -8,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './framework.component.css'
 })
 export class FrameworkComponent {
+  allFrameWork = ['android' , 'angular' , 'django','docker' , 'dotnet' , 'git' , 'react']
 
 }

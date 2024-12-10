@@ -1,1 +1,37 @@
-<p>certificate works!</p>
+<div (mouseover)="slideService.onOver()" (mouseleave)="slideService.onLeave()" class="w-full h-full p-0.5 overflow-hidden shadow-md bg-white rounded-2xl">
+  <div class="relative w-full h-full flex-col flex justify-center items-center">
+    <div class="w-full h-4/5 overflow-hidden">
+      <div [style.translate.%]="slideService.slideValue" class="w-full h-full flex flex-row justify-items-start items-center rounded" #courseal>
+        <img class="w-full h-full object-cover p-0.5 rounded-2xl" src="./Certificate/{{slideService.certificate[0].name}}.png">
+        <img class="w-full h-full object-cover p-0.5 rounded-2xl" src="./Certificate/{{slideService.certificate[1].name}}.png">
+
+      </div>
+      <div (click)="slideService.onclickLeft(courseal)" class="absolute top-[110px] left-0 hover:scale-125 {{slideService.opa}}">
+          <div class="w-[25px] h-[25px] translate-x-1 rounded-full bg-white">
+            <img class="w-full h-fullobject-cover p-0.5" src="./Certificate/leftArrow.svg">
+          </div>
+      </div>
+      <div (click)="slideService.onclickRight(courseal)" class="absolute top-[110px] right-0 hover:scale-125 {{slideService.opa}}">
+        <div class="w-[25px] h-[25px] -translate-x-1 rounded-full bg-white">
+          <img class="w-full h-fullobject-cover p-0.5" src="./Certificate/rightArrow.svg">
+        </div>
+      </div>
+
+      <div class="absolute bottom-[65px] w-full flex flex-row justify-center items-center ">
+        <div (click)="slideService.onclickLeft(courseal)" class="mx-0.5 w-[5px] h-[5px] translate-x-1 hover:scale-125 rounded-full {{slideService.blueFirst()}}"></div>
+        <div (click)="slideService.onclickRight(courseal)" class="w-[5px] h-[5px] hover:scale-125 translate-x-1 rounded-full {{slideService.blueSecond()}}"></div>
+      </div>
+
+      <div (click)="onExpandClick()" class="absolute bottom-[60px] right-0 flex flex-row justify-center items-center hover:scale-125 {{slideService.opa}}">
+        <div class="w-[15px] h-[15px] -translate-x-1 rounded-full bg-white">
+          <img class="w-full h-fullobject-cover p-0.5" src="./Certificate/expand.svg">
+        </div>
+      </div>
+    </div>
+    <div class="w-full h-1/5  bg-blue-100 text-center p-0.5 rounded-t-sm rounded-b-2xl flex flex-col justify-center items-center">
+      <p class="font-bold text-gray-800 ">{{slideService.certificate[slideService.selected].discription}}</p>
+    </div>
+  </div>
+
+
+</div>

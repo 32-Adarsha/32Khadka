@@ -7,7 +7,7 @@ import {CellType} from "../model/component-holder";
 })
 export class GridService {
 
-  constructor() { }
+  constructor() {}
   GlobalService = inject(GlobalServiceService)
   divOutline:WritableSignal<{ pos: { x:number , y:number } , width:number , height:number , vis:string }> = signal({
     pos:this.GlobalService.getPoint(0),
@@ -37,6 +37,7 @@ export class GridService {
   public getPosition(x:number , y:number , t:CellType) {
     if (t == CellType.small){return this.getPosTileSmall(x,y)}
     else if (t == CellType.mid){return this.getPosTileMid(x,y)}
+    else if (t == CellType.long){return this.getPosTileLong(x,y)}
     else{return this.getPosTileBig(x,y)}
   }
   getPosTileSmall(x:number, y:number){
@@ -57,14 +58,17 @@ export class GridService {
 
     return [this.getZ(a1[0] , a1[1]), this.getZ(a2[0] , a2[1]) , this.getZ(a3[0] , a3[1]) , this.getZ(a4[0] , a4[1]) ];
   }
+  getPosTileLong(x:number, y:number) {
+    let lx = Math.round((x-75)/150)
+    let ly  = Math.round((y-150)/150)
+    let a1 = lx
+    let a2 =  Math.round(y/150)
+    return [this.getZ(lx, ly), this.getZ(a1, a2)]
+  }
+
   getZ(x:number, y:number) {
     return this.GlobalService.numberOfcol()*y + x;
   }
-  public gridRearrange(current_pos:number){
-
-  }
-
-
 
 
 

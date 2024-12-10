@@ -1,20 +1,64 @@
-<div class="flex flex-row  justify-start items-center w-full h-full gap-2">
-  <div class="w-1/4 h-full bg-gray-100 rounded-md p-3 flex flex-col justify-start items-center text-xl font-medium text-gray-600">
-      <button (click)="onSelected(displayOption.wallpaper)" class="w-full h-[45px] p-3 rounded-md flex justify-center items-center my-2 {{selected == displayOption.wallpaper ? 'bg-green-300':'bg-gray-200'}}">Wallpaper</button>
-      <button (click)="onSelected(displayOption.Feature)" class="w-full h-[45px] bg-gray-200 p-3 rounded-md flex justify-center items-center my-2 {{selected == displayOption.Feature ? 'bg-green-300':'bg-gray-200'}}">Feature</button>
-  </div>
-  <div class="w-3/4 h-full bg-gray-200 rounded-md shadow-sm p-5 overflow-scroll">
-    @switch (selected){
-      @case (displayOption.wallpaper){
-        @for (wallpaper of wallservice.allWallpaper; track  $index){
-          <div (click)="wallservice.changeWallpaper(wallpaper)" [style.outline]=isOutline(wallpaper) class="w-full h-[150px] my-3 outline-offset-2 overflow-hidden rounded-md outline-black">
-            <img class="w-full h-full object-cover" src="./walpaper/{{wallpaper}}">
+<div class="flex flex-row  justify-center items-center w-full h-full gap-2">
+  <div class="min-w-[500px] min-h-[500px] w-9/12 h-5/6 flex flex-col lg:flex-row md:flex-col sm:flex-col justify-start items-center gap-2">
+    <div class="w-9/12 lg:w-1/4 lg:h-full sm:w-9/12 bg-gray-100 rounded-md p-3 flex flex-row lg:flex-col md:flex-row sm:flex-row  justify-start items-center text-xl font-medium text-gray-600 gap-2">
+        <button (click)="onSelected(displayOption.wallpaper)" class="w-full h-[45px] p-3 rounded-md flex justify-center items-center my-2 {{selected == displayOption.wallpaper ? 'bg-green-300':'bg-gray-200'}}">Wallpaper</button>
+        <button (click)="onSelected(displayOption.Feature)" class="w-full h-[45px] bg-gray-200 p-3 rounded-md flex justify-center items-center my-2 {{selected == displayOption.Feature ? 'bg-green-300':'bg-gray-200'}}">Feature</button>
+    </div>
+    <div class="w-3/4 h-full bg-gray-200 rounded-md shadow-sm p-5 overflow-scroll ">
+      @switch (selected){
+        @case (displayOption.wallpaper){
+          <div class="relative w-full h-full flex flex-col justify-items-end overflow-hidden ">
+          <div class="relative w-full h-4/6 ">
+            <div class="absolute right-4 top-4"><button (click)="globalService.setUserWallpaper(previewWallpaper)" class="p-1 bg-blue-400 text-white rounded">Set Wallpaper</button></div>
+            <img class="w-full h-full p-2 rounded-2xl object-cover" src="./walpaper/{{previewWallpaper}}">
+          </div>
+
+<!--            This is a right and left arrow on top of wallpaper selection-->
+
+            <div (click)="scroll(wallpaperContainer , 'right')" class="absolute flex flex-col justify-center items-center w-[40px] h-2/6 bottom-0 left-0 bg-white rounded-tl-2xl rounded-bl-2xl opacity-50 z-50">
+              <div class="h-full w-full flex flex-col justify-center items-center hover:scale-110 duration-100 transform">
+                <img src="./icon/rightDarrow.svg"/>
+              </div>
+            </div>
+            <div (click)="scroll(wallpaperContainer , 'left')" class="absolute  w-[40px] h-2/6 bottom-0 right-0 bg-white rounded-tr-2xl rounded-br-2xl opacity-50 z-50">
+              <div class="h-full w-full flex flex-col justify-center items-center hover:scale-125 duration-100 transform">
+              <img src="./icon/leftDarrow.svg"/>
+              </div>
+            </div>
+
+
+          <div class="relative w-full h-2/6 overflow-x-scroll noScrollbar flex flex-row gap-3 p-4 rounded-2xl" #wallpaperContainer>
+          @for (wallpaper of wallservice.allWallpaper; track  $index){
+            <div (click)="setPreview(wallpaper.name)" class="relative min-w-[100px] min-h-[100px] max-h-[200px] max-w-[200px] outline-offset-2 rounded-md outline-black">
+              @if(globalService.userPreference.wallpaper == wallpaper.name){
+              <div class="absolute top-2 right-0 z-50 w-[20px] h-[20px]">
+                <img class="w-full h-full" src="./miniWallPaper/check.svg">
+              </div>
+              }
+              <img [style.outline]=isOutline(wallpaper.name) class=" h-full hover:scale-110 transform duration-100 outline-offset-1 m-1 rounded-2xl m object-cover" src="./miniWallPaper/{{wallpaper.mininame}}">
+            </div>
+          }
+          </div>
+          </div>
+        }
+        @case (displayOption.Feature){
+          <div class="w-full h-full flex flex-row flex-wrap gap-2">
+            <div class="w-[200px] h-[200px]">
+              <img class="rounded-2xl shadow shadow-gray-600" src="./Tutorial/dragAndDrop.gif">
+              <p class="w-[200px] text-center font-bold">Drag&Drop</p>
+            </div>
+            <div class="w-[200px] h-[200px]">
+              <img class="rounded-2xl shadow shadow-gray-600" src="./Tutorial/interactive.gif">
+              <p>Interactive Tile</p>
+            </div>
+            <div class="w-[200px] h-[200px]">
+              <img class="rounded-2xl shadow shadow-gray-600" src="./Tutorial/wallpaper.gif">
+              <p>Custom Wallpaper</p>
+            </div>
           </div>
         }
       }
-      @case (displayOption.quote){
-        <div>Test2</div>
-      }
-    }
+    </div>
+
   </div>
 </div>

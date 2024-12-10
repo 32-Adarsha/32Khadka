@@ -1,4 +1,4 @@
-import {computed, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
+import {computed, effect, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
 import {CellType, ComponentHolder} from "../model/component-holder";
 import {ClockTileComponent} from "../app/components/Clock/clock-tile/clock-tile.component";
 import {CalenderTileComponent} from "../app/components/Calender/calender-tile/calender-tile.component";
@@ -9,9 +9,11 @@ import {WeatherTileComponent} from "../app/components/Weather/weather-tile/weath
 import {QuoteComponent} from "../app/components/quote/quote/quote.component";
 import {LinkedinComponent} from "../app/components/socialMedia/linkedin/linkedin.component";
 import {GithubComponent} from "../app/components/socialMedia/github/github.component";
-import {InstagramComponent} from "../app/components/socialMedia/instagram/instagram.component";
 import {MailComponent} from "../app/components/socialMedia/mail/mail.component";
 import {ResumeComponent} from "../app/components/socialMedia/resume/resume.component";
+import {CertificateComponent} from "../app/components/certificateService/certificate/certificate.component";
+import {PlanguageComponent} from "../app/components/Language/planguage/planguage.component";
+import {FrameworkComponent} from "../app/components/Language/framework/framework.component";
 
 
 @Injectable({
@@ -29,9 +31,10 @@ export class ComponentServiceService {
     new ComponentHolder('Quote' , QuoteComponent, undefined ,CellType.mid, 270 , 120 , 5, 'auto',[5,6],{x:0 ,y:0} ),
     new ComponentHolder('Linkedin' , LinkedinComponent, undefined ,CellType.small, 120, 120 , 7, 'auto',[7],{x:0 ,y:0} ),
     new ComponentHolder('Github' , GithubComponent, undefined , CellType.small,120, 120 , 8, 'auto',[8],{x:0 ,y:0} ),
-    new ComponentHolder('Instagram' , InstagramComponent, undefined ,CellType.small, 120, 120 , 9, 'auto',[9],{x:0 ,y:0} ),
     new ComponentHolder('Mail' , MailComponent, undefined ,CellType.small, 120, 120 , 10, 'auto',[10],{x:0 ,y:0} ),
     new ComponentHolder('Resume' , ResumeComponent, undefined ,CellType.small, 120, 120 , 11, 'auto',[11],{x:0 ,y:0} ),
+    new ComponentHolder('Certificate' , CertificateComponent , undefined , CellType.big , 270 , 270 , 12 , 'auto',[12,13,19,20],{x:0 ,y:0} ),
+    new ComponentHolder('Languages' , PlanguageComponent , undefined , CellType.long , 120 , 270 , 14 , 'auto',[14],{x:0 ,y:0} ),
   ]
   allComponents:WritableSignal<ComponentHolder[]> = signal([])
   isFilled:Signal<{name:string ,type:CellType , id:number}[]> = computed(()=> {
@@ -52,8 +55,6 @@ export class ComponentServiceService {
       this.isFilled()[pos] = {name:"" ,type:CellType.blank, id:-1}
       console.log(pos)
     })
-
-
   }
 
 
@@ -68,7 +69,6 @@ export class ComponentServiceService {
       if(leftPos >= 0){
         if (this.isFilled()[leftPos].type == CellType.blank){
           spaceFound.push(leftPos)
-
         }
       }
 
@@ -104,10 +104,15 @@ export class ComponentServiceService {
         y.splice(pos , 1)
       })
       let z = {name:this.allComponents()[indexAtComponent].name , type:this.allComponents()[indexAtComponent].cType , id:indexAtComponent}
+    if(space.length == 2){
+      y.splice(leftPos , 0 ,z,z )
+    } else {
       y.splice(leftPos , 0 ,z )
+    }
       this.isFilled = signal<{ name: string , type: CellType ,id: number }[]>([...y])
       let i = 0;
-      while(i < y.length){
+      let len = y.length
+      while(i < len){
         let isContained = !(y[i].type == CellType.blank)
         if(isContained){
           let idx:number = y[i].id
@@ -117,8 +122,13 @@ export class ComponentServiceService {
             this.allComponents()[idx].index = i
             this.allComponents()[idx].arrPos = [i]
           } else {
-            let x = false
-
+            if(this.isAtEdge(i)){
+              let newBlock = this.getNextFreeSpace(i , y)
+              y.splice(newBlock , 1)
+              y.splice(i , 0 , {name:"" ,type:CellType.blank, id:-1})
+              this.isFilled = signal<{ name: string , type: CellType ,id: number }[]>([...y])
+              i++
+            }
             this.allComponents()[idx].position = this.GlobalService.getPoint(i)
             this.allComponents()[idx].index = i
             this.allComponents()[idx].arrPos = [i , i+1]
@@ -139,26 +149,64 @@ export class ComponentServiceService {
     this.allComponents()[index].arrPos = newPosArr
 
   }
+
   isAtEdge(pos:number){
     let num = this.GlobalService.numberOfcol()
+    console.log( pos % num == num - 1)
     return pos % num == num - 1
   }
+
+
+  getNextFreeSpace(pos:number , y:{name:string ,type:CellType , id:number}[]){
+    pos += 2
+    while(pos < y.length && y[pos].type != CellType.blank){
+        pos += 1
+    }
+    return pos
+  }
+
+  canPutTile(location:number[]){
+    let canRearrange = true
+    location.forEach((pos:number) => {
+      if (this.isFilled()[pos].type != CellType.blank){
+        canRearrange = false
+      }
+    })
+    return canRearrange
+  }
+
+  putTile(location:number[] , index:number){
+    if (this.canPutTile(location)){
+      this.allComponents()[index].position = this.GlobalService.getPoint(location[0])
+      this.allComponents()[index].arrPos = location
+      location.forEach((pos:number) => {
+        this.isFilled()[pos] = {name:this.allComponents()[index].name , type:this.allComponents()[index].cType , id:index}
+      })
+    } else {
+
+      let prevLocation = this.allComponents()[index].arrPos
+      this.allComponents()[index].position = this.GlobalService.getPoint(prevLocation[0])
+      this.allComponents()[index].arrPos = prevLocation
+      prevLocation.forEach((pos:number) => {
+        this.isFilled()[pos] = {name:this.allComponents()[index].name , type:this.allComponents()[index].cType , id:index}
+      })
+
+    }
+  }
+
+
+
+  getIndex(x:number, y:number) {
+    return this.GlobalService.numberOfcol()*x + y;
+  }
+
   constructor() {
     this.ComponentArray.forEach((element:ComponentHolder) => {
       element.position = this.GlobalService.getPoint(element.index);
     })
     this.allComponents.set(this.ComponentArray);
+
   }
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,13 +1,37 @@
 import {computed, Injectable, Signal, signal, WritableSignal} from '@angular/core';
+import {LocalStorage} from "../model/local-storage";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalServiceService {
+  defaultPreference = new LocalStorage(true,'east.png' , [])
+  userPreference = this.defaultPreference
+  resized : WritableSignal<number> = signal(0)
+  constructor() {
+    if (localStorage.getItem('preference') != null){
+      this.userPreference = JSON.parse(localStorage.getItem('preference')!);
+    }else{
+      this.userPreference = this.defaultPreference
+      localStorage.setItem('preference', JSON.stringify(this.userPreference));
+    }
 
-  constructor() { }
+  }
 
-  HighlightPosition = 0;
+  setUserPreference(){
+    localStorage.setItem('preference', JSON.stringify(this.userPreference));
+  }
+  setUserWallpaper(wallpaper:string){
+    this.userPreference.wallpaper = wallpaper;
+    this.setUserPreference()
+  }
+
+  setUserComponentOrder(order:{name:string , index:number}[]){
+    this.userPreference.component_orders = order;
+    this.setUserPreference()
+  }
+
+
   widthOfScreen : WritableSignal<number> = signal(Math.round(window.innerWidth*(10/12)))
   heightOfScreen : WritableSignal<number> = signal(Math.round(window.innerHeight*(5/6)))
   width:Signal<string> = computed(()=> {
@@ -35,6 +59,9 @@ export class GlobalServiceService {
     let y_cord = (x % noRow)*150
     return {x:y_cord , y:x_cord}
   }
+
+
+
 
 
 

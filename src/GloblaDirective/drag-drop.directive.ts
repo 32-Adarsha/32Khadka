@@ -3,6 +3,7 @@ import {CellType} from "../model/component-holder";
 import {GridService} from "../Services/grid.service";
 import {GlobalServiceService} from "../Services/global-service.service";
 import {ComponentServiceService} from "../Services/component-service.service";
+import {ComponentType} from "@angular/cdk/portal";
 
 @Directive({
   selector: '[appDragDrop]',
@@ -12,10 +13,15 @@ export class DragDropDirective {
   @Input() type: CellType = CellType.small;
   @Input() pos = 0;
   @Input() indx:number = 0;
+  @Input() childELM:string = "";
+
+
+
   timeOut:any;
   GridService = inject(GridService)
   GlobalService = inject(GlobalServiceService)
   compService = inject(ComponentServiceService)
+
   constructor(private  el:ElementRef) {
     window.addEventListener('mouseup' , () => {
       clearTimeout(this.timeOut);
@@ -29,7 +35,7 @@ export class DragDropDirective {
 
 
   @HostListener('mousedown') onMouseDown(event: MouseEvent) {
-    this.GridService.divOutline().pos = this.GlobalService.getPoint(this.pos);
+    this.GridService.divOutline().pos = this.GlobalService.getPoint(this.compService.allComponents()[this.indx].arrPos[0]);
     this.compService.allComponents()[this.indx].zIndex = 120;
     this.timeOut = setTimeout(() => {
       this.el.nativeElement.classList.add('bounceIn');
@@ -38,8 +44,16 @@ export class DragDropDirective {
       this.GridService.divOutline().vis = 'visible';
       if (this.type == CellType.small){
         this.GridService.divOutline().width = 120;
+        this.GridService.divOutline().height = 120;
       } else if (this.type == CellType.mid ){
         this.GridService.divOutline().width = 270;
+        this.GridService.divOutline().height = 120;
+      } else if (this.type == CellType.big){
+        this.GridService.divOutline().height = 270;
+        this.GridService.divOutline().width = 270;
+      } else {
+        this.GridService.divOutline().height = 270;
+        this.GridService.divOutline().width = 120;
       }
     }, 1000);
 
@@ -49,7 +63,6 @@ export class DragDropDirective {
 
   }
   @HostListener('dragstart') onDragStart(event: MouseEvent) {
-    console.log("Test")
     this.compService.allComponents()[this.indx].arrPos.forEach(pos => {
       console.log(pos)
     })
