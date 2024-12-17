@@ -1,11 +1,12 @@
 import {computed, Injectable, Signal, signal, WritableSignal} from '@angular/core';
 import {LocalStorage} from "../model/local-storage";
+import {CellType} from "../model/component-holder";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalServiceService {
-  defaultPreference = new LocalStorage(true,'east.png' , [])
+  defaultPreference = new LocalStorage(true,'east.png' , [] , [])
   userPreference = this.defaultPreference
   resized : WritableSignal<number> = signal(0)
   constructor() {
@@ -26,10 +27,7 @@ export class GlobalServiceService {
     this.setUserPreference()
   }
 
-  setUserComponentOrder(order:{name:string , index:number}[]){
-    this.userPreference.component_orders = order;
-    this.setUserPreference()
-  }
+
 
 
   widthOfScreen : WritableSignal<number> = signal(Math.round(window.innerWidth*(10/12)))
@@ -59,6 +57,10 @@ export class GlobalServiceService {
     let y_cord = (x % noRow)*150
     return {x:y_cord , y:x_cord}
   }
+
+
+
+
 
 
 

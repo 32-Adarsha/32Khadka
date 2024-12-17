@@ -2,7 +2,8 @@
 <div class="w-full h-full relative flex flex-col justify-center overflow-hidden items-center">
 
   <div class="absolute w-full h-full backImage">
-    <img class="w-full h-full object-cover" src="./walpaper/{{GlobalService.userPreference.wallpaper}}" alt="test">
+    <img class="w-full h-full object-cover" ngSrc="./walpaper/{{GlobalService.userPreference.wallpaper}}" alt="test"
+         fill>
   </div>
 
   <div  class="absolute bg-gray-100 opacity-20  rounded-2xl" [style.width]="GlobalService.width()" [style.height]="GlobalService.height()">
@@ -23,12 +24,14 @@
       <div [style.width]="GridService.divOutline().width+'px'" [style.height]="GridService.divOutline().height+'px'" [style.visibility]="GridService.divOutline().vis" class="rounded-2xl outline outline-2 outline-offset-3 ease-in-out duration-75"></div>
     </div>
     @for(c of compService.allComponents(); track $index){
+      @if(c.index < GlobalService.numberOfElement()){
+
         <div [style.z-index]="c.zIndex" [style.width]="c.width+30+'px'" [style.height]="c.height+30+'px'" class="absolute flex justify-center items-center" id="{{c.name}}" [cdkDragStartDelay]="1000" (cdkDragReleased)="drop(bound , c.name , gridParent , $index ,c.cType)" [cdkDragBoundary]= bound cdkDrag [cdkDragFreeDragPosition]="c.position" (cdkDragMoved)="dragElement(bound , c.name , gridParent, c.cType)" (cdkDragStarted)="compService.removePosition($index)">
           <div appDragDrop [type]="c.cType" [childELM]="c.name"  [pos]="c.index" [indx]="$index" [style.width]="c.width+'px'" [style.height]="c.height+'px'" class="rounded-2xl ease-in-out duration-75">
             <ng-template appLoadComponent [component]="c.smTile"></ng-template>
-
           </div>
         </div>
+      }
     }
   </div>
 

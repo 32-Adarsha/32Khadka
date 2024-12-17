@@ -1,4 +1,4 @@
-import {computed, effect, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
+import {computed, inject, Injectable, Signal, signal, WritableSignal} from '@angular/core';
 import {CellType, ComponentHolder} from "../model/component-holder";
 import {ClockTileComponent} from "../app/components/Clock/clock-tile/clock-tile.component";
 import {CalenderTileComponent} from "../app/components/Calender/calender-tile/calender-tile.component";
@@ -13,7 +13,6 @@ import {MailComponent} from "../app/components/socialMedia/mail/mail.component";
 import {ResumeComponent} from "../app/components/socialMedia/resume/resume.component";
 import {CertificateComponent} from "../app/components/certificateService/certificate/certificate.component";
 import {PlanguageComponent} from "../app/components/Language/planguage/planguage.component";
-import {FrameworkComponent} from "../app/components/Language/framework/framework.component";
 
 
 @Injectable({
@@ -37,17 +36,19 @@ export class ComponentServiceService {
     new ComponentHolder('Languages' , PlanguageComponent , undefined , CellType.long , 120 , 270 , 14 , 'auto',[14],{x:0 ,y:0} ),
   ]
   allComponents:WritableSignal<ComponentHolder[]> = signal([])
-  isFilled:Signal<{name:string ,type:CellType , id:number}[]> = computed(()=> {
+  isFilled:Signal<{name:string ,type:CellType , id:number}[]> = computed(() => {
     let temp:{name:string ,type:CellType , id:number}[] = new Array( this.GlobalService.numberOfElement()).fill({name:"" ,type:CellType.blank, id:-1});
-    for(let j=0; j < this.allComponents().length;j++){
+    console.log(temp)
+    for(let j=0; j < this.allComponents.length;j++){
       let c = this.allComponents()[j]
-      this.allComponents()[j].arrPos.forEach(elementAt => {
+      let newArrayPos = this.getNewArrayPos(this.allComponents()[j].index , this.allComponents()[j].cType)
+      newArrayPos.forEach(elementAt => {
         temp[elementAt] = {name:c.name , type:c.cType , id:j}
       })
     }
+
     return temp
   })
-
 
 
   removePosition(index:number){
@@ -152,9 +153,10 @@ export class ComponentServiceService {
 
   isAtEdge(pos:number){
     let num = this.GlobalService.numberOfcol()
-    console.log( pos % num == num - 1)
     return pos % num == num - 1
   }
+
+
 
 
   getNextFreeSpace(pos:number , y:{name:string ,type:CellType , id:number}[]){
@@ -167,6 +169,7 @@ export class ComponentServiceService {
 
   canPutTile(location:number[]){
     let canRearrange = true
+    console.log(this.isFilled())
     location.forEach((pos:number) => {
       if (this.isFilled()[pos].type != CellType.blank){
         canRearrange = false
@@ -179,18 +182,26 @@ export class ComponentServiceService {
     if (this.canPutTile(location)){
       this.allComponents()[index].position = this.GlobalService.getPoint(location[0])
       this.allComponents()[index].arrPos = location
+      this.GlobalService.userPreference.component_orders = this.allComponents()
+
       location.forEach((pos:number) => {
         this.isFilled()[pos] = {name:this.allComponents()[index].name , type:this.allComponents()[index].cType , id:index}
       })
+
+      this.GlobalService.userPreference.isFilled = this.isFilled()
+      this.GlobalService.setUserPreference()
     } else {
 
       let prevLocation = this.allComponents()[index].arrPos
       this.allComponents()[index].position = this.GlobalService.getPoint(prevLocation[0])
       this.allComponents()[index].arrPos = prevLocation
+      this.GlobalService.userPreference.component_orders = this.allComponents()
+
       prevLocation.forEach((pos:number) => {
         this.isFilled()[pos] = {name:this.allComponents()[index].name , type:this.allComponents()[index].cType , id:index}
       })
-
+      this.GlobalService.userPreference.isFilled = this.isFilled()
+      this.GlobalService.setUserPreference()
     }
   }
 
@@ -200,13 +211,33 @@ export class ComponentServiceService {
     return this.GlobalService.numberOfcol()*x + y;
   }
 
+  fillIsFilled(newComponent:ComponentHolder[]) {
+
+  }
+
   constructor() {
     this.ComponentArray.forEach((element:ComponentHolder) => {
       element.position = this.GlobalService.getPoint(element.index);
     })
-    this.allComponents.set(this.ComponentArray);
+
+
+    this.allComponents.set(this.ComponentArray)
 
   }
+
+  getNewArrayPos(index:number , cType:CellType):number[]{
+    if (cType == CellType.small){
+      return [index]
+    } else if (cType == CellType.mid){
+      return [index , index+1]
+    } else if (cType == CellType.long){
+      return [index , index+this.GlobalService.numberOfcol()]
+    }else{
+      return [index , index+1 , index + this.GlobalService.numberOfcol() ,index+1+this.GlobalService.numberOfcol()];
+    }
+  }
+
+
 
 
 

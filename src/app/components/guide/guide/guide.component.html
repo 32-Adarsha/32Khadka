@@ -11,7 +11,8 @@
               <div class="relative w-4/12 h-full rounded pt-4">
                 <p class="text-center font-bold text-3xl">Drag&Drop</p>
                 <p>Hold the icon for 2 seconds until the pop animation plays. While holding it, drag the element to free space to move it. The animation will indicate that it is ready to be moved.</p>
-                <div (click)="this.move(SelectionType.Interactive)" class="absolute right-0 bottom-3 w-[70px] h-[45px] rounded  bg-teal-200 flex flex-col justify-center items-center font-bold"> Next </div>
+                <div (click)="this.move(SelectionType.Interactive)" class="absolute cursor-pointer right-0 bottom-3 w-[70px] h-[45px] rounded  bg-teal-200 flex flex-col justify-center items-center font-bold"> Next </div>
+                <div (click)="this.move(SelectionType.Interactive)" class="absolute cursor-pointer right-0 bottom-3 w-[70px] h-[45px] rounded  bg-teal-200 flex flex-col justify-center items-center font-bold"> Next </div>
               </div>
 
             </div>
@@ -25,8 +26,8 @@
               <div class="relative w-4/12 h-full rounded pt-4">
                 <p class="text-center font-bold text-3xl">Interactive</p>
                 <p>Interactive Tiles: These are dynamic, user-friendly elements that can be added, removed, or rearranged seamlessly.</p>
-                <div (click)="move(SelectionType.Wallpaper)" class="absolute right-0 bottom-3 w-[70px] h-[45px] rounded  bg-teal-200 flex flex-col justify-center items-center font-bold"> Next </div>
-                <div (click)="move(SelectionType.Drag)" class="absolute left-0 bottom-3 w-[70px] h-[45px] rounded  bg-teal-200 flex flex-col justify-center items-center font-bold"> Back </div>
+                <div (click)="move(SelectionType.Wallpaper)" class="absolute cursor-pointer right-0 bottom-3 w-[70px] h-[45px] rounded  bg-teal-200 flex flex-col justify-center items-center font-bold"> Next </div>
+                <div (click)="move(SelectionType.Drag)" class="absolute cursor-pointer left-0 bottom-3 w-[70px] h-[45px] rounded  bg-teal-200 flex flex-col justify-center items-center font-bold"> Back </div>
               </div>
 
             </div>
@@ -40,8 +41,8 @@
               <div class="relative w-4/12 h-full rounded pt-4">
                 <p class="text-center font-bold text-3xl">Wallpaper</p>
                 <p>Create a personalized wallpaper. It is an exciting way to make your screen uniquely yours.</p>
-                <div (click)="tutorialFinish()" class="absolute right-0 bottom-3 w-[70px] h-[45px] rounded  bg-orange-400 flex flex-col justify-center items-center font-bold"> Finish </div>
-                <div (click)="move(SelectionType.Interactive)" class="absolute left-0 bottom-3 w-[70px] h-[45px] rounded  bg-teal-200 flex flex-col justify-center items-center font-bold"> Back </div>
+                <div (click)="tutorialFinish()" class="absolute cursor-pointer right-0 bottom-3 w-[70px] h-[45px] rounded  bg-orange-400 flex flex-col justify-center items-center font-bold"> Finish </div>
+                <div (click)="move(SelectionType.Interactive)" class="absolute cursor-pointer left-0 bottom-3 w-[70px] h-[45px] rounded  bg-teal-200 flex flex-col justify-center items-center font-bold"> Back </div>
               </div>
 
             </div>

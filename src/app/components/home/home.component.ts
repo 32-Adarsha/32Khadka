@@ -18,6 +18,7 @@ import {WallpaperService} from "../../../Services/wallpaper.service";
 import {CellType} from "../../../model/component-holder";
 import {PopService} from "../../../Services/pop.service";
 
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -58,12 +59,9 @@ export class HomeComponent implements AfterViewInit {
       this.popService.vis = true
       this.GlobalService.userPreference.isNew = false
     }
-  }
 
-  ifIsNew(){
 
   }
-
 
 
   tgSetting(){
@@ -96,6 +94,8 @@ export class HomeComponent implements AfterViewInit {
     let z = newPosition[0]
     this.GridService.divOutline().pos = this.GlobalService.getPoint(z);
   }
+
+
 
   protected readonly Array = Array;
   protected readonly console = console;
